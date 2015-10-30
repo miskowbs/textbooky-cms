@@ -1,0 +1,64 @@
+/* This is a database recreation script for Textbooky if we ever need to rebuild the database.
+   It is untested, so its first run may not work correctly. Refer to Bart (miskowbs@rose-hulman.edu)
+   if there is an issue. */
+
+/* -Login to the server that the database will reside on, and become root (sudo su if your account has
+    sudo privileges).
+   -Ensure that the packages "postgresql<version>-server" and "psql" are installed (<version> refers
+    to the version number of the postgres that you would like to install. For example, for version
+	9.4 installed on a CentOS machine, run "yum install postgresql94-server." If you are still
+	confused, refer to the wiki article at
+	"https://wiki.postgresql.org/wiki/Detailed_installation_guides" to install the server on the
+	appropriate OS.
+   -Follow the steps at the above link to intialize the database and start the service, then go to
+    "https://wiki.postgresql.org/wiki/First_steps" for a quick rundown for testing the database and
+	getting a basic of idea for running scripts in the prompt.
+   -If you'd like, try to use the schema functionality. However, I don't bother with it, as it is a
+    catagorization tool, but Textbooky's database isn't that complex. */
+
+/* After everything is installed and all services are running, in the terminal, run "psql -U postgres"
+   to start the psql prompt. (If this doesn't work, do "su postgres" to become the postgres user and
+   then just run "psql" to start the service */
+
+/* Now you will edit the postgres user password */
+
+
+ALTER ROLE postgres PASSWORD <pass>; /*Replace <pass> with your password*/
+
+
+/* Create the database "Textbooky" */
+
+
+CREATE DATABASE Textbooky;
+
+
+/* connect to the new database */
+
+
+/connect Textbooky
+
+
+/* Now begin the scripts to recreate the database */
+
+
+
+CREATE TABLE Users(userId SERIAL primary key, username varchar(255), password varchar(255), phoneNum varchar(10), firstName varchar(255), lastName varchar(255), photoDir varchar(255), location varchar(255), transactionCount int); 
+
+CREATE TABLE Reviews(reviewId SERIAL primary key, userId int references Users(userId), rating int, body varchar(500)); 
+
+CREATE TABLE listings (listingId SERIAL primary key, userId int references users(userId), ISBN varchar(17), Title varchar(255), Edition varchar(255), Author varchar(255), Price money, Location varchar(50), Condition int, Comments varchar(500), negotiable boolean, postDate date, expirationDate date); 
+
+CREATE TABLE listingPhotos ( listingPhotoId SERIAL primary key, listingId int references listings(listingId), photoDir varchar(500));
+
+/* Here are scripts for inserting one value into each of the table */ 
+
+INSERT INTO users (username, password, phoneNum, firstName, lastName, photoDir, location, transactionCount) VALUES ('sdanger', 'pass123', '5555555555', 'Stranger', 'Danger', '', '', 0); 
+
+INSERT INTO listings (userId, ISBN, Title, Edition, Author, price, location, condition, comments, negotiable, postdate, expirationdate) VALUES (1, 99999999999999999, 'butts', '2nd', 'Dingle Berry',  34.25, '', 4, 'OK book I guess', cast(1 as bool), to_date('05 Oct 2015', 'DD Mon YYYY'), to_date('05 Nov 2015', 'DD Mon YYYY')); 
+
+INSERT INTO reviews (userId, rating, body) VALUES (1, 3, 'Cool guy, but he was a dangerous stranger'); 
+
+INSERT INTO listingphotos (listingId, photoDir) VALUES (1, '~/');
+
+/* Note, this just creates the database, there are at least two more changes that must be done as root
+   to enable connecting to the database, explained in the readme. */

@@ -1,0 +1,27 @@
+This is a readme file for recreating the database for Textbooky. First READ and execute all the files
+in createDB.psql. Eventually, I may have an automated script that could be run using
+"psql -f <fileToRun> Textbooky", but today is not that day.
+
+After doing all things in createDB.psql, the database is complete, but it will only accept local
+connections, so two files must be changed. If you haven't changed any of the default config files, do
+"cd /var/lib/pgsql/9.4/data/" as root. There make sure that the files "pg_hba.conf" and
+"postgresql.conf" are the same as the ones in this directory (The lines that begin with a "#" are
+comments, so those do not need to be changed if they are different).
+
+In general, the change that needs to be made to "pg_hba.conf" needs the lines
+
+local		all		   postgres	  	  	 	md5
+host		all		   all	137.112.0.0/16	md5
+host		all		   all	::1/128			ident #Probably is wrong
+
+to be able to interact with all computers on the Rose-Hulman campus.
+
+The change that "postgresql.conf" needs is
+
+change "listen_addresses = 'localhost'" to "listen_addresses = '*'"
+
+Then, run "service postgresql-9.4 restart" as root to apply the changes.
+
+If you made changes but you still cannot connect, try "reboot" as root to restart the server. If
+that fails, contact Bart at miskowbs@rose-hulman.edu. Again, if that fails, ask Darryl nicely to help
+you, he is a wizard.

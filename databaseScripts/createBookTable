@@ -1,0 +1,1 @@
+CREATE TABLE books(bookID serial primary key, ISBN varchar(17), Title varchar(255),Edition varchar(255),Author varchar(255));

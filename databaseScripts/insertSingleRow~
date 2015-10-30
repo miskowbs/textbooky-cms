@@ -1,0 +1,9 @@
+INSERT INTO tb.books (isbn, title, edition, author) VALUES ('12345678912345678', 'testbook', '3rd edition', 'Bartosz Miskowiec');
+
+INSERT INTO tb.users (username, password, phoneNum, firstName, lastName, photoDir, location, transactionCount) VALUES ('sdanger', 'pass123', '5555555555', 'Stranger', 'Danger', '', '', 0);
+
+INSERT INTO tb.listings (bookId, userId, price, location, condition, comments, negotiable, postdate, expirationdate) VALUES (1, 1, 34.25, '', 4, 'OK book I guess', cast(1 as bool), to_date('05 Oct 2015', 'DD Mon YYYY'), to_date('05 Nov 2015', 'DD Mon YYYY'));
+
+INSERT INTO tb.reviews (userId, rating, body) VALUES (1, 3, 'Cool guy, but he was a dangerous stranger');
+
+INSERT INTO tb.listingphotos (listingId, photoDir) VALUES (1, '~/');

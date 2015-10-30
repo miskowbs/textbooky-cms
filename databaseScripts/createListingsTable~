@@ -1,0 +1,3 @@
+CREATE TABLE tb.listings (listingId SERIAL primary key, bookId int references tb.books(bookId), userId int references tb.users(userId), Price numeric(2), Location varchar(50), Condition int, Comments varchar(500), negotiable boolean, postDate date, expirationDate date);
+
+CREATE TABLE tb.listingPhotos ( listingPhotoId SERIAL primary key, listingId int references tb.listings(listingId), photoDir varchar(500));

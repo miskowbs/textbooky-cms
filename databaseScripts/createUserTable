@@ -1,0 +1,3 @@
+CREATE TABLE Users(userId SERIAL primary key, username varchar(255), password varchar(255), phoneNum varchar(10), firstName varchar(255), lastName varchar(255), photoDir varchar(255), location varchar(255), transactionCount int);
+
+CREATE TABLE Reviews(reviewId SERIAL primary key, userId int references Users(userId), rating int, body varchar(500));
